@@ -1,4 +1,4 @@
 lua-resty-sass
 ==============
 
-LuaJIT FFI bindings for LibSass (http://libsass.org/)
+LuaJIT FFI bindings for libsass - A C/C++ implementation of a Sass compiler (http://libsass.org/).
