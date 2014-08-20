@@ -9,7 +9,7 @@ local type       = type
 ffi_cdef[[
 typedef struct sass_options {
   int output_style;
-  int source_comments; // really want a bool, but C doesn't have them
+  int source_comments;
   const char* include_paths;
   const char* image_path;
   int precision;
@@ -56,12 +56,12 @@ typedef struct sass_folder_context {
 struct sass_context*        sass_new_context        (void);
 struct sass_file_context*   sass_new_file_context   (void);
 struct sass_folder_context* sass_new_folder_context (void);
-void sass_free_context        (struct sass_context* ctx);
-void sass_free_file_context   (struct sass_file_context* ctx);
-void sass_free_folder_context (struct sass_folder_context* ctx);
-int sass_compile              (struct sass_context* ctx);
-int sass_compile_file         (struct sass_file_context* ctx);
-int sass_compile_folder       (struct sass_folder_context* ctx);
+void   sass_free_context        (struct sass_context* ctx);
+void   sass_free_file_context   (struct sass_file_context* ctx);
+void   sass_free_folder_context (struct sass_folder_context* ctx);
+int    sass_compile             (struct sass_context* ctx);
+int    sass_compile_file        (struct sass_file_context* ctx);
+int    sass_compile_folder      (struct sass_folder_context* ctx);
 ]]
 
 local libsass = ffi_load("/Users/bungle/Sources/lua-resty-sass/lib/resty/libsass.so")
