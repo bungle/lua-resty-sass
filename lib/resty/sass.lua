@@ -64,7 +64,7 @@ int    sass_compile_file        (struct sass_file_context* ctx);
 int    sass_compile_folder      (struct sass_folder_context* ctx);
 ]]
 
-local libsass = ffi_load("/Users/bungle/Sources/lua-resty-sass/lib/resty/libsass.so")
+local libsass = ffi_load("libsass")
 
 local styles = {
     nested     = 0,
