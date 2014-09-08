@@ -53,7 +53,7 @@ int    sass_compile_file        (struct sass_file_context* ctx);
 
 local libsass = ffi_load("libsass")
 
-local styles = {
+local styles   = {
     nested     = 0,
     expanded   = 1,
     compact    = 2,
@@ -61,9 +61,9 @@ local styles = {
 }
 
 local comments = {
-    none = 0,
-    default = 1,
-    map = 2
+    none       = 0,
+    default    = 1,
+    map        = 2
 }
 
 local function options(opts, ctx)
