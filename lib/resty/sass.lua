@@ -43,25 +43,12 @@ typedef struct sass_file_context {
   char** included_files;
   int num_included_files;
 };
-typedef struct sass_folder_context {
-  const char* search_path;
-  const char* output_path;
-  struct sass_options options;
-  int error_status;
-  char* error_message;
-  struct Sass_C_Function_Descriptor* c_functions;
-  char** included_files;
-  int num_included_files;
-};
 struct sass_context*        sass_new_context        (void);
 struct sass_file_context*   sass_new_file_context   (void);
-struct sass_folder_context* sass_new_folder_context (void);
 void   sass_free_context        (struct sass_context* ctx);
 void   sass_free_file_context   (struct sass_file_context* ctx);
-void   sass_free_folder_context (struct sass_folder_context* ctx);
 int    sass_compile             (struct sass_context* ctx);
 int    sass_compile_file        (struct sass_file_context* ctx);
-int    sass_compile_folder      (struct sass_folder_context* ctx);
 ]]
 
 local libsass = ffi_load("libsass")
