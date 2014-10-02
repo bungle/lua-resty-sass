@@ -43,12 +43,13 @@ typedef struct sass_file_context {
   char** included_files;
   int num_included_files;
 };
-struct sass_context*        sass_new_context        (void);
-struct sass_file_context*   sass_new_file_context   (void);
-void   sass_free_context        (struct sass_context* ctx);
-void   sass_free_file_context   (struct sass_file_context* ctx);
-int    sass_compile             (struct sass_context* ctx);
-int    sass_compile_file        (struct sass_file_context* ctx);
+struct sass_context*                  sass_new_context        (void);
+struct sass_file_context*             sass_new_file_context   (void);
+void   sass_free_context      (struct sass_context* ctx);
+void   sass_free_file_context (struct sass_file_context* ctx);
+int    sass_compile           (struct sass_context* ctx);
+int    sass_compile_file      (struct sass_file_context* ctx);
+char*  sass2scss              (const char* sass, const int options);
 ]]
 
 local libsass = ffi_load("libsass")
@@ -168,6 +169,10 @@ function sass.compile_file(opts)
             return css, map
         end
     end
+end
+
+function sass.sass2scss(sass, options)
+    return ffi_str(libsass.sass2scss(sass, options or 0));
 end
 
 return sass
