@@ -172,7 +172,10 @@ function sass.compile_file(opts)
 end
 
 function sass.sass2scss(sass, options)
-    return ffi_str(libsass.sass2scss(sass, options or 0));
+    options = options or 0
+    assert(type(sass) == "string", "sass.sass2scss first argument should be of type string.")
+    assert(type(options) == "number", "sass.sass2scss optional second argument should be of type number.")
+    return ffi_str(libsass.sass2scss(sass, options))
 end
 
 return sass
