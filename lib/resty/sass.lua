@@ -142,14 +142,13 @@ function sass.compile(opts)
 end
 
 function sass.compile_file(opts)
-    local t, dst, ctx = type(opts), false, ffi_gc(libsass.sass_new_file_context(), libsass.sass_free_file_context)
+    local t, ctx = type(opts), ffi_gc(libsass.sass_new_file_context(), libsass.sass_free_file_context)
     assert(t == "table" or t == "string", "sass.compile_file takes a single argument of type string or table.")
     if t == "table" then
         assert(type(opts.src) == "string", "sass.compile_file called with table argument needs to have at least src key of type string.")
         ctx.input_path = opts.src
         options(opts, ctx)
-        dst = opts.dst
-        if dst then
+        if opts.dst then
             ctx.output_path = dst
             if ctx.options.source_comments == true then
                 ctx.source_map_file = dst .. '.map'
