@@ -4,6 +4,7 @@ local file         = require "resty.sass.file"
 local data         = require "resty.sass.data"
 local ffi          = require "ffi"
 local ffi_str      = ffi.string
+local type         = type
 local open         = io.open
 local setmetatable = setmetatable
 
@@ -18,15 +19,24 @@ function sass.new()
     }, sass)
 end
 
-function sass:compile_file(input_path, output_path)
+function sass.compile_file(options, input_path, output_path)
     local file = file.new(input_path)
     local context = file.context
-    local options = self.options
+    local opts
+    if type(options) == "table" then
+        if getmetatable(options) == sass then
+            opts = options.options
+        else
+            opts = options
+        end
+    else
+        opts = options.new()
+    end
     if output_path then
         options.output_path = output_path
     end
-    options.input_path = input_path
-    file.options = options
+    opts.input_path = input_path
+    file.options = opts
     file:compile()
     if context.error_status ~= 0 then
         return nil, context.error_message
@@ -45,7 +55,7 @@ function sass:compile_file(input_path, output_path)
             end
             of:close()
         end
-        local output_path = options.source_map_file
+        local output_path = opts.source_map_file
         if output_path then
             if context.error_status ~= 0 then
                 return nil, context.error_message
@@ -70,11 +80,20 @@ function sass:compile_file(input_path, output_path)
     end
 end
 
-function sass:compile_data(input_string, output_path)
+function sass.compile_data(options, input_string, output_path)
     local data = data.new(input_string)
     local context = data.context
-    local options = self.options
-    data.options = options
+    local opts
+    if type(options) == "table" then
+        if getmetatable(options) == sass then
+            opts = options.options
+        else
+            opts = options
+        end
+    else
+        opts = options.new()
+    end
+    data.options = opts
     data:compile()
     if context.error_status ~= 0 then
         return nil, context.error_message
