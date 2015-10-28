@@ -118,6 +118,8 @@ Sass_Import_Entry sass_compiler_get_last_import(struct Sass_Compiler* compiler);
 Sass_Import_Entry sass_compiler_get_import_entry(struct Sass_Compiler* compiler, size_t idx);
 void sass_option_push_plugin_path(struct Sass_Options* options, const char* path);
 void sass_option_push_include_path(struct Sass_Options* options, const char* path);
+char* sass2scss(const char* sass, const int options);
+const char* sass2scss_version(void);
 void* malloc(size_t size);
 ]]
 
