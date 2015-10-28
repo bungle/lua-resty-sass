@@ -99,4 +99,9 @@ function sass:compile_data(input_string, output_path)
     end
 end
 
+sass.sass2scss = setmetatable({ version = ffi_str(libsass.sass2scss_version()) }, { __call = function(_, sass, options)
+    options = options or 0
+    return ffi_str(libsass.sass2scss(sass, options))
+end })
+
 return sass
