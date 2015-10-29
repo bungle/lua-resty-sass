@@ -58,7 +58,7 @@ function nginx.compile(options)
         exec(var.uri)
     else
         if map then
-            print(select(2,s:compile_file(inp)))
+            print(select(2, s:compile_file(inp)))
         else
             print((s:compile_file(inp)))
         end
