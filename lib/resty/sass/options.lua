@@ -24,8 +24,6 @@ function options:__index(n)
     elseif n == "is_indented_syntax_src" then
         return lib.sass_option_get_is_indented_syntax_src(self.context)
     elseif n == "indent" then
-        return lib.sass_option_get_indent(self.context)
-    elseif n == "indent" then
         local s = lib.sass_option_get_indent(self.context)
         return s ~= nil and ffi_str(s) or nil
     elseif n == "linefeed" then
@@ -50,7 +48,7 @@ function options:__index(n)
         local s = lib.sass_option_get_source_map_root(self.context)
         return s ~= nil and ffi_str(s) or nil
     else
-        return rawget(options, n)
+        return rawget(self, n) or rawget(options, n)
     end
 end
 
@@ -69,8 +67,6 @@ function options:__newindex(n, v)
         lib.sass_option_set_omit_source_map_url(self.context, v)
     elseif n == "is_indented_syntax_src" then
         lib.sass_option_set_is_indented_syntax_src(self.context, v)
-    elseif n == "indent" then
-        lib.sass_option_set_indent(self.context, v)
     elseif n == "indent" then
         lib.sass_option_set_indent(self.context, v)
     elseif n == "linefeed" then

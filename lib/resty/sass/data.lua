@@ -17,7 +17,7 @@ function data:__index(n)
         self.context = c
         return c
     else
-        return rawget(data, n)
+        return rawget(self, n) or rawget(data, n)
     end
 end
 

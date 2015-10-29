@@ -14,7 +14,7 @@ function file:__index(n)
         self.context = c
         return c
     else
-        return rawget(file, n)
+        return rawget(self, n) or rawget(file, n)
     end
 end
 

@@ -12,6 +12,19 @@ function context:__index(n)
     elseif n == "error_message" then
         local s = lib.sass_context_get_error_message(self.context)
         return s ~= nil and ffi_str(s) or nil
+    elseif n == "error_json" then
+        local s = lib.sass_context_get_error_json(self.context)
+        return s ~= nil and ffi_str(s) or nil
+    elseif n == "error_text" then
+        local s = lib.sass_context_get_error_text(self.context)
+        return s ~= nil and ffi_str(s) or nil
+    elseif n == "error_file" then
+        local s = lib.sass_context_get_error_file(self.context)
+        return s ~= nil and ffi_str(s) or nil
+    elseif n == "error_line" then
+        return lib.sass_context_get_error_line(self.context)
+    elseif n == "error_column" then
+        return lib.sass_context_get_error_column(self.context)
     elseif n == "output_string" then
         local s = lib.sass_context_get_output_string(self.context)
         return s ~= nil and ffi_str(s) or nil
@@ -19,7 +32,7 @@ function context:__index(n)
         local s = lib.sass_context_get_source_map_string(self.context)
         return s ~= nil and ffi_str(s) or nil
     else
-        return rawget(context, n)
+        return rawget(self, n) or rawget(context, n)
     end
 end
 

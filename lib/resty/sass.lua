@@ -55,22 +55,24 @@ function sass.compile_file(optionz, input_path, output_path)
             end
             of:close()
         end
-        local output_path = opts.source_map_file
-        if output_path then
+        local source_path = opts.source_map_file
+        if source_path then
             if context.error_status ~= 0 then
                 return nil, context.error_message
             end
             local map = context.source_map_string
-            local of, err = open(output_path, "w")
-            if not of then
-                return of, err
-            end
-            local ok, err = of:write(map)
-            if not ok then
+            if output_path then
+                local of, err = open(source_path, "w")
+                if not of then
+                    return of, err
+                end
+                local ok, err = of:write(map)
+                if not ok then
+                    of:close()
+                    return ok, err
+                end
                 of:close()
-                return ok, err
             end
-            of:close()
             return output, map
         else
             return output
