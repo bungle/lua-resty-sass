@@ -1,12 +1,17 @@
 local sass     = require "resty.sass"
 local styles   = require "resty.sass.styles"
 local tonumber = tonumber
-local select   = select
 local pairs    = pairs
 local ngx      = ngx
 local print    = ngx.print
 local exec     = ngx.exec
+local exit     = ngx.exit
 local var      = ngx.var
+local notfound = ngx.HTTP_NOT_FOUND
+local error    = ngx.HTTP_INTERNAL_SERVER_ERROR
+local io       = io
+local open     = io.open
+local close    = io.close
 local sub      = string.sub
 local nginx    = {}
 
@@ -31,15 +36,6 @@ local defaults = {
 }
 
 function nginx.compile(options)
-    local c = options or defaults
-    local s = sass.new()
-    local o = s.options
-    for k, v in pairs(defaults) do
-        local opt = c[k] or v
-        if opt then
-            o[k] = opt
-        end
-    end
     local out = var.request_filename
     local len = #out
     local map = sub(out, len - 2) == "map"
@@ -50,19 +46,36 @@ function nginx.compile(options)
     else
         inp = sub(out, 1, len - 3) .. "scss"
     end
+    local f = open(inp, "r")
+    if not f then
+        exit(notfound)
+    end
+    close(f)
+    local c = options or defaults
+    local s = sass.new()
+    local o = s.options
+    for k, v in pairs(defaults) do
+        local opt = c[k] or v
+        if opt then
+            o[k] = opt
+        end
+    end
     if o.source_map then
         o.source_map_file = out .. ".map"
     end
     if o.cache then
-        s:compile_file(inp, out)
-        exec(var.uri)
+        local ok = s:compile_file(inp, out)
+        if ok then exec(var.uri) end
     else
         if map then
-            print(select(2, s:compile_file(inp)))
+            local ok, c = s:compile_file(inp)
+            if ok then return print(c) end
         else
-            print((s:compile_file(inp)))
+            local c = s:compile_file(inp)
+            if c then return print(c) end
         end
     end
+    exit(error)
 end
 
 return nginx
