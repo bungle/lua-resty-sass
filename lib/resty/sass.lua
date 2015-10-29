@@ -19,21 +19,21 @@ function sass.new()
     }, sass)
 end
 
-function sass.compile_file(options, input_path, output_path)
+function sass.compile_file(optionz, input_path, output_path)
     local file = file.new(input_path)
     local context = file.context
     local opts
-    if type(options) == "table" then
-        if getmetatable(options) == sass then
-            opts = options.options
+    if type(optionz) == "table" then
+        if getmetatable(optionz) == sass then
+            opts = optionz.options
         else
-            opts = options
+            opts = optionz
         end
     else
         opts = options.new()
     end
     if output_path then
-        options.output_path = output_path
+        opts.output_path = output_path
     end
     opts.input_path = input_path
     file.options = opts
