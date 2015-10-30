@@ -4,7 +4,6 @@ local ok, lfs = pcall(require, "syscall.lfs")
 if not ok then
     ok, lfs = pcall(require, "lfs")
 end
-ok = false
 local mod
 if ok then
     local att = lfs.attributes
