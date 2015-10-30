@@ -65,7 +65,7 @@ function nginx.compile(options)
     end
     if o.cache then
         local ok = s:compile_file(inp, out)
-        if ok then exec(var.uri) end
+        if ok then return exec(var.uri) end
     else
         if map then
             local ok, c = s:compile_file(inp)
@@ -75,7 +75,7 @@ function nginx.compile(options)
             if c then return print(c) end
         end
     end
-    exit(error)
+    return exit(error)
 end
 
 return nginx
