@@ -1,4 +1,3 @@
-local open = io.open
 local ok, lfs = pcall(require, "syscall.lfs")
 if not ok then
     ok, lfs = pcall(require, "lfs")
@@ -10,6 +9,7 @@ if ok then
         return att(file, "modification")
     end
 else
+    local open = io.open
     local sha1 = ngx.sha1_bin
     mod = function(file)
         local f = open(file)
