@@ -1,4 +1,3 @@
-local io = io
 local open = io.open
 local ok, lfs = pcall(require, "syscall.lfs")
 if not ok then
@@ -17,8 +16,7 @@ else
         if not f then return nil end
         local d = f:read "*a"
         f:close()
-        if not d then return nil end
-        return sha1(d)
+        return d and sha1(d) or nil
     end
 end
 local tim = {}
