@@ -4,7 +4,6 @@ local tonumber = tonumber
 local pairs    = pairs
 local ngx      = ngx
 local print    = ngx.print
-local exec     = ngx.exec
 local exit     = ngx.exit
 local var      = ngx.var
 local notfound = ngx.HTTP_NOT_FOUND
@@ -64,8 +63,13 @@ function nginx.compile(options)
         o.source_map_file = out .. ".map"
     end
     if o.cache then
-        local ok = s:compile_file(inp, out)
-        if ok then return exec(var.uri) end
+        if map then
+            local ok, c = s:compile_file(inp, out)
+            if ok then return print(c) end
+        else
+            local c = s:compile_file(inp, out)
+            if c then return print(c) end
+        end
     else
         if map then
             local ok, c = s:compile_file(inp)
