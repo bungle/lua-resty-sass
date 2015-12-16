@@ -7,6 +7,7 @@ local ffi_str      = ffi.string
 local type         = type
 local open         = io.open
 local setmetatable = setmetatable
+local getmetatable = getmetatable
 
 local sass = {
     version = ffi_str(lib.libsass_version())
