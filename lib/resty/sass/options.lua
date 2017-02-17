@@ -1,5 +1,6 @@
 local lib          = require "resty.sass.library"
 local ffi          = require "ffi"
+local ffi_gc       = ffi.gc
 local ffi_str      = ffi.string
 local setmetatable = setmetatable
 local tonumber     = tonumber
@@ -19,6 +20,8 @@ function options:__index(n)
         return lib.sass_option_get_source_map_embed(self.context)
     elseif n == "source_map_contents" then
         return lib.sass_option_get_source_map_contents(self.context)
+    elseif n == "source_map_file_urls" then
+        return lib.sass_option_get_source_map_file_urls(self.context)
     elseif n == "omit_source_map_url" then
         return lib.sass_option_get_omit_source_map_url(self.context)
     elseif n == "is_indented_syntax_src" then
@@ -63,6 +66,8 @@ function options:__newindex(n, v)
         lib.sass_option_set_source_map_embed(self.context, v)
     elseif n == "source_map_contents" then
         lib.sass_option_set_source_map_contents(self.context, v)
+    elseif n == "source_map_file_urls" then
+        lib.sass_option_set_source_map_file_urls(self.context, v)
     elseif n == "omit_source_map_url" then
         lib.sass_option_set_omit_source_map_url(self.context, v)
     elseif n == "is_indented_syntax_src" then
@@ -89,7 +94,7 @@ function options:__newindex(n, v)
 end
 
 function options.new()
-    return setmetatable({ context = lib.sass_make_options() }, options)
+    return setmetatable({ context = ffi_gc(lib.sass_make_options(), lib.sass_delete_options) }, options)
 end
 
 return options

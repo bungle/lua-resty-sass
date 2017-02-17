@@ -7,7 +7,9 @@ enum Sass_Output_Style {
     SASS_STYLE_NESTED,
     SASS_STYLE_EXPANDED,
     SASS_STYLE_COMPACT,
-    SASS_STYLE_COMPRESSED
+    SASS_STYLE_COMPRESSED,
+    SASS_STYLE_INSPECT,
+    SASS_STYLE_TO_SASS
 };
 enum Sass_Compiler_State {
     SASS_COMPILER_CREATED,
@@ -32,10 +34,14 @@ typedef Sass_Import_List(*Sass_Importer_Fn)(const char* url, Sass_Importer_Entry
 typedef struct Sass_Function(*Sass_Function_Entry);
 typedef struct Sass_Function*(*Sass_Function_List);
 typedef union Sass_Value*(*Sass_Function_Fn)(const union Sass_Value*, Sass_Function_Entry cb, struct Sass_Compiler* compiler);
+void* sass_alloc_memory(size_t size);
+void  sass_free_memory(void* ptr);
+char* sass_copy_c_string(const char* str);
 char* sass_string_quote(const char* str, const char quote_mark);
 char* sass_string_unquote(const char* str);
 char* sass_resolve_file(const char* path, const char* incs[]);
 const char* libsass_version(void);
+const char* libsass_language_version(void);
 struct Sass_Options* sass_make_options(void);
 struct Sass_File_Context* sass_make_file_context(const char* input_path);
 struct Sass_Data_Context* sass_make_data_context(char* source_string);
@@ -46,6 +52,7 @@ struct Sass_Compiler* sass_make_data_compiler(struct Sass_Data_Context* data_ctx
 int sass_compiler_parse(struct Sass_Compiler* compiler);
 int sass_compiler_execute(struct Sass_Compiler* compiler);
 void sass_delete_compiler(struct Sass_Compiler* compiler);
+void sass_delete_options(struct Sass_Options* options);
 void sass_delete_file_context(struct Sass_File_Context* ctx);
 void sass_delete_data_context(struct Sass_Data_Context* ctx);
 struct Sass_Context* sass_file_context_get_context(struct Sass_File_Context* file_ctx);
@@ -60,6 +67,7 @@ enum Sass_Output_Style sass_option_get_output_style(struct Sass_Options* options
 bool sass_option_get_source_comments(struct Sass_Options* options);
 bool sass_option_get_source_map_embed(struct Sass_Options* options);
 bool sass_option_get_source_map_contents(struct Sass_Options* options);
+bool sass_option_get_source_map_file_urls(struct Sass_Options* options);
 bool sass_option_get_omit_source_map_url(struct Sass_Options* options);
 bool sass_option_get_is_indented_syntax_src(struct Sass_Options* options);
 const char* sass_option_get_indent(struct Sass_Options* options);
@@ -78,6 +86,7 @@ void sass_option_set_output_style(struct Sass_Options* options, enum Sass_Output
 void sass_option_set_source_comments(struct Sass_Options* options, bool source_comments);
 void sass_option_set_source_map_embed(struct Sass_Options* options, bool source_map_embed);
 void sass_option_set_source_map_contents(struct Sass_Options* options, bool source_map_contents);
+void sass_option_set_source_map_file_urls(struct Sass_Options* options, bool source_map_file_urls);
 void sass_option_set_omit_source_map_url(struct Sass_Options* options, bool omit_source_map_url);
 void sass_option_set_is_indented_syntax_src(struct Sass_Options* options, bool is_indented_syntax_src);
 void sass_option_set_indent(struct Sass_Options* options, const char* indent);

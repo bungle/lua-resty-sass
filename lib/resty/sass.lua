@@ -10,7 +10,8 @@ local setmetatable = setmetatable
 local getmetatable = getmetatable
 
 local sass = {
-    version = ffi_str(lib.libsass_version())
+    version = ffi_str(lib.libsass_version()),
+    language_version = ffi_str(lib.libsass_language_version())
 }
 sass.__index = sass
 
@@ -33,6 +34,7 @@ function sass.compile_file(optionz, input_path, output_path)
     else
         opts = options.new()
     end
+    local source_path = opts.source_map_file
     if output_path then
         opts.output_path = output_path
     end
@@ -56,7 +58,6 @@ function sass.compile_file(optionz, input_path, output_path)
             end
             of:close()
         end
-        local source_path = opts.source_map_file
         if source_path then
             if context.error_status ~= 0 then
                 return nil, context.error_message
